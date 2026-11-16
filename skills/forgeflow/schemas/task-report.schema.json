@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ForgeFlow Task Report",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "task_id",
+    "agent",
+    "status",
+    "summary",
+    "artifacts",
+    "files_changed",
+    "criteria_results",
+    "commands_run",
+    "unresolved_issues",
+    "risks",
+    "injection_flags",
+    "requires_human_approval",
+    "approval_request"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string",
+      "pattern": "^(DEV|CRE|SHR)-\\d{3,}$"
+    },
+    "agent": {
+      "enum": [
+        "lead",
+        "research-agent",
+        "strategy-agent",
+        "production-agent",
+        "validation-agent",
+        "optimization-agent",
+        "release-agent"
+      ]
+    },
+    "status": {
+      "enum": [
+        "completed",
+        "blocked",
+        "failed",
+        "needs_approval"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "files_changed": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "criteria_results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "criterion_id",
+          "status",
+          "evidence"
+        ],
+        "properties": {
+          "criterion_id": {
+            "type": "string",
+            "pattern": "^AC-\\d{2,}$"
+          },
+          "status": {
+            "enum": [
+              "passed",
+              "failed",
+              "not_verified"
+            ]
+          },
+          "evidence": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "commands_run": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "command",
+          "exit_code",
+          "summary"
+        ],
+        "properties": {
+          "command": {
+            "type": "string"
+          },
+          "exit_code": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "summary": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "unresolved_issues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "injection_flags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "requires_human_approval": {
+      "type": "boolean"
+    },
+    "approval_request": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "action",
+            "summary",
+            "files",
+            "commands",
+            "reason"
+          ],
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "summary": {
+              "type": "string"
+            },
+            "files": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "commands": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

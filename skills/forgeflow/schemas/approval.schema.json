@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ForgeFlow Proposal / Approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "approval_id",
+    "project_id",
+    "action",
+    "summary",
+    "scope",
+    "risks",
+    "reversibility",
+    "status",
+    "proposed_at"
+  ],
+  "properties": {
+    "approval_id": {
+      "type": "string",
+      "pattern": "^APR-\\d{3,}$"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*-\\d{8}-[a-z0-9]{4}$"
+    },
+    "action": {
+      "enum": [
+        "implementation",
+        "scope_extension",
+        "dependency_install",
+        "env_change",
+        "destructive",
+        "migration",
+        "git_commit",
+        "git_push",
+        "pull_request",
+        "deploy",
+        "publish",
+        "external_share",
+        "other"
+      ]
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "files",
+        "commands"
+      ],
+      "properties": {
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reversibility": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "proposed",
+        "approved",
+        "rejected",
+        "revoked",
+        "superseded"
+      ]
+    },
+    "proposed_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}:\\d{2}$"
+    },
+    "granted_by": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "decided_at": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}:\\d{2}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "user_statement": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "proposal_sha256": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "supersedes": {
+      "anyOf": [
+        {
+          "type": "string",
+          "pattern": "^APR-\\d{3,}$"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "description": "Proposals (.forgeflow/proposals/) are written by the lead with status 'proposed'. Approvals (.forgeflow/approvals/) are written ONLY by the UserPromptSubmit hook and are HMAC-signed."
+}

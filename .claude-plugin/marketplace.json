@@ -1,0 +1,14 @@
+{
+  "name": "forgeflow-local",
+  "owner": {
+    "name": "ForgeFlow"
+  },
+  "description": "Local marketplace that serves the ForgeFlow plugin from this folder.",
+  "plugins": [
+    {
+      "name": "forgeflow",
+      "source": "./",
+      "description": "Approval-gated multi-agent workflow for developers and content creators."
+    }
+  ]
+}

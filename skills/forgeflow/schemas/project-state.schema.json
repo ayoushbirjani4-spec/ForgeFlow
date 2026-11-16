@@ -1,0 +1,311 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ForgeFlow Project State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "project_name",
+    "workflow",
+    "status",
+    "created_at",
+    "updated_at",
+    "user_request",
+    "objective",
+    "requirements",
+    "constraints",
+    "acceptance_criteria",
+    "task_ids",
+    "approval_ids",
+    "baseline",
+    "decisions",
+    "artifacts",
+    "team",
+    "revision_policy",
+    "final_report"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": 2
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*-\\d{8}-[a-z0-9]{4}$"
+    },
+    "project_name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "workflow": {
+      "enum": [
+        "developer",
+        "creator",
+        "combined"
+      ]
+    },
+    "status": {
+      "enum": [
+        "intake",
+        "planning",
+        "awaiting_approval",
+        "executing",
+        "validating",
+        "revising",
+        "delivering",
+        "completed",
+        "cancelled"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}:\\d{2}$"
+    },
+    "updated_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}:\\d{2}$"
+    },
+    "user_request": {
+      "type": "string"
+    },
+    "objective": {
+      "type": "string"
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "acceptance_criteria": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "text",
+          "required"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^AC-\\d{2,}$"
+          },
+          "text": {
+            "type": "string",
+            "minLength": 1
+          },
+          "required": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "task_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(DEV|CRE|SHR)-\\d{3,}$"
+      }
+    },
+    "approval_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^APR-\\d{3,}$"
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "git",
+        "head",
+        "branch",
+        "dirty_files",
+        "recorded_at"
+      ],
+      "properties": {
+        "git": {
+          "type": "boolean"
+        },
+        "head": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "branch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "dirty_files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "path",
+              "sha256"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "sha256": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            }
+          }
+        },
+        "recorded_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}:\\d{2}$"
+        }
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "decision",
+          "reason",
+          "at"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^DEC-\\d{3,}$"
+          },
+          "decision": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "at": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}[+-]\\d{2}:\\d{2}$"
+          }
+        }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "path",
+          "task_id",
+          "kind"
+        ],
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "task_id": {
+            "type": "string",
+            "pattern": "^(DEV|CRE|SHR)-\\d{3,}$"
+          },
+          "kind": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "team": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tier",
+        "members"
+      ],
+      "properties": {
+        "tier": {
+          "enum": [
+            "solo",
+            "subagents",
+            "team"
+          ]
+        },
+        "members": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "lead",
+              "research-agent",
+              "strategy-agent",
+              "production-agent",
+              "validation-agent",
+              "optimization-agent",
+              "release-agent"
+            ]
+          }
+        }
+      }
+    },
+    "revision_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "max_revisions"
+      ],
+      "properties": {
+        "max_revisions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5
+        }
+      }
+    },
+    "phases": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "workflow",
+          "status"
+        ],
+        "properties": {
+          "workflow": {
+            "enum": [
+              "developer",
+              "creator"
+            ]
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "active",
+              "completed"
+            ]
+          }
+        }
+      }
+    },
+    "final_report": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

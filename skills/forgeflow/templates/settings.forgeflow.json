@@ -1,0 +1,25 @@
+{
+  "_comment": "Optional defence in depth. Merge into the TARGET project's .claude/settings.json. The ForgeFlow guard hook already blocks these without an approval; these rules make Claude Code ask even when one exists.",
+  "permissions": {
+    "ask": [
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(gh pr create:*)",
+      "Bash(gh pr merge:*)",
+      "Bash(npm install:*)",
+      "Bash(npm publish:*)",
+      "Bash(pip install:*)",
+      "Bash(docker push:*)",
+      "Bash(terraform apply:*)",
+      "Bash(kubectl apply:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(rm -rf /:*)"
+    ]
+  },
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "name": "forgeflow",
+  "version": "0.2.0",
+  "description": "Approval-gated multi-agent production workflow for developers and content creators. Ships the /forgeflow skill, six specialist agents, and enforcement hooks.",
+  "author": {
+    "name": "ForgeFlow"
+  },
+  "keywords": ["agent-teams", "workflow", "approval", "developer", "creator"]
+}
